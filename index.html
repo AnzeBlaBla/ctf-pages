@@ -66,7 +66,7 @@
             ' isActive=', false);
         } */
 
-        log_request(LOG_URL, {
+        log_request({
           'event': DOMEventCategory,
           'target': e.target,
           'active': document.activeElement,
@@ -78,10 +78,27 @@
 
   }
 
-  function log_request(url, data) {
+  let LOG_QUEUE = [];
+  const LOG_INTERVAL = 500;
+
+  function log_request(data) {
+    LOG_QUEUE.push(data);
+  }
+
+  function log_request_interval() {
+    // send all data and clear queue
+
+    var data = LOG_QUEUE;
+
+    LOG_QUEUE = [];
+
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
+    xhr.open("POST", LOG_URL, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
+
+    if (LOG_QUEUE.length > 0) {
+      setTimeout(log_request_interval, LOG_INTERVAL);
+    }
   }
 </script>
