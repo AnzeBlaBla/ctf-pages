@@ -46,31 +46,10 @@
     DOMEventTypes.filter(function(DOMEventType) {
       var DOMEventCategory = DOMEvent + ' ' + DOMEventType;
       document.addEventListener(DOMEventType, function(e) {
-        if (RecentlyLoggedDOMEventTypes[DOMEventCategory]) {
-          return;
-        }
-        RecentlyLoggedDOMEventTypes[DOMEventCategory] = true;
-        setTimeout(function() {
-          RecentlyLoggedDOMEventTypes[DOMEventCategory] = false
-        }, 5000);
-        var isActive = e.target == document.activeElement;
-        /* if (isActive) {
-          console.info(DOMEventCategory,
-            ' target=', e.target,
-            ' active=', document.activeElement,
-            ' isActive=', true);
-        } else {
-          console.log(DOMEventCategory,
-            ' target=', e.target,
-            ' active=', document.activeElement,
-            ' isActive=', false);
-        } */
-
         log_request({
           'event': DOMEventCategory,
-          'target': e.target,
+          'e': e,
           'active': document.activeElement,
-          'isActive': isActive
         })
 
       }, true);
@@ -79,7 +58,7 @@
   }
 
   let LOG_QUEUE = [];
-  const LOG_INTERVAL = 500;
+  const LOG_INTERVAL = 1000;
 
   function log_request(data) {
     LOG_QUEUE.push(data);
@@ -87,6 +66,10 @@
 
   function log_request_interval() {
     // send all data and clear queue
+    if (LOG_QUEUE.length == 0) {
+      setTimeout(log_request_interval, LOG_INTERVAL);
+      return;
+    }
 
     var data = LOG_QUEUE;
 
@@ -97,8 +80,8 @@
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
 
-    if (LOG_QUEUE.length > 0) {
-      setTimeout(log_request_interval, LOG_INTERVAL);
-    }
+    setTimeout(log_request_interval, LOG_INTERVAL);
   }
+
+    setTimeout(log_request_interval, LOG_INTERVAL);
 </script>
